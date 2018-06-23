@@ -4,15 +4,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.method.articleservice.controllers.interceptor.SecurityIntercepter;
 import com.method.articleservice.controllers.interceptor.ValidationIntercepter;
 
-@SuppressWarnings("deprecation")
 @EnableWebMvc
 @Configuration
-public class MvcConfig extends WebMvcConfigurerAdapter {
+public class MvcConfig implements WebMvcConfigurer {
 
 	@Bean
 	public ValidationIntercepter validationIntervepter() {
