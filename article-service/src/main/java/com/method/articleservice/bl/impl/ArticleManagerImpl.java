@@ -1,6 +1,5 @@
 package com.method.articleservice.bl.impl;
 
-import static com.method.articleservice.util.Constants.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,10 +43,9 @@ public class ArticleManagerImpl implements ArticleManager {
 	}
 
 	@Override
-	public String remove(String articleId) {
+	public void remove(String articleId) {
 		Article article = mongoTemplate.findById(articleId, Article.class);
 		mongoTemplate.remove(article);
-		return OK;
 	}
 
 	@Override
@@ -64,12 +61,11 @@ public class ArticleManagerImpl implements ArticleManager {
 	@Override
 	public List<Article> findByUsername(String username) {
 		Query queryUser = new Query();
-		queryUser.addCriteria(Criteria.where(NAME).is(username));
+		queryUser.addCriteria(Criteria.where("name").is(username));
 		User user = mongoTemplate.findOne(queryUser, User.class);
 		Query query = new Query();
-		query.addCriteria(Criteria.where(USER_ID).is(user.getId()));
-		List<Article> list = mongoTemplate.find(query, Article.class);
-		return list;
+		query.addCriteria(Criteria.where("userId").is(user.getId()));
+		return mongoTemplate.find(query, Article.class);
 	}
 
 	@Override
@@ -79,7 +75,7 @@ public class ArticleManagerImpl implements ArticleManager {
 
 	@Override
 	public Article add(Article article, String sectionsStr, MultipartFile[] headPhotos)
-			throws JsonMappingException, IOException {
+			throws IOException {
 		List<Section> industry = objectMapper.readValue(sectionsStr, new TypeReference<List<Section>>() {
 		});
 
@@ -93,9 +89,9 @@ public class ArticleManagerImpl implements ArticleManager {
 
 	private String storeFile(MultipartFile file, String username, String articleId) throws IOException {
 		DBObject dbObject = new BasicDBObject();
-		dbObject.put(USERNAME, username);
-		dbObject.put(MODULE, ARTICLE);
-		dbObject.put(ARTICLE, articleId);
+		dbObject.put("username", username);
+		dbObject.put("module", "article");
+		dbObject.put("article", articleId);
 		String fileType = null;
 		if (file.getOriginalFilename().lastIndexOf(".") != -1)
 			fileType = file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
@@ -111,9 +107,9 @@ public class ArticleManagerImpl implements ArticleManager {
 		Attachment temp_attachment = null;
 		for (MultipartFile mFile : files) {
 			DBObject dbObject = new BasicDBObject();
-			dbObject.put(USERNAME, username);
-			dbObject.put(MODULE, "");
-			dbObject.put(ARTICLE_ID, articleId);
+			dbObject.put("username", username);
+			dbObject.put("module", "article");
+			dbObject.put("articleId", articleId);
 
 			temp_attachment = new Attachment();
 			if (mFile.getOriginalFilename().lastIndexOf(".") != -1)

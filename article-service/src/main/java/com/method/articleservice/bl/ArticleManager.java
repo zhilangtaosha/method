@@ -12,7 +12,7 @@ public interface ArticleManager {
 	Article add(Article article, String sectionsStr, MultipartFile[] headPhotos)
 			throws JsonMappingException, IOException;
 
-	String remove(String articleId);
+	void remove(String articleId);
 
 	Article update(String articleId, Article article);
 
