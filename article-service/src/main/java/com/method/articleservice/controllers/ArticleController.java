@@ -15,13 +15,13 @@ import com.method.articleservice.bl.ArticleManager;
 import com.method.articleservice.entity.Article;
 
 @RestController
-@RequestMapping("article")
+@RequestMapping("/article")
 @CrossOrigin
 public class ArticleController {
 	@Autowired
 	ArticleManager articleManager;
 
-	@PostMapping("add")
+	@PostMapping("/add")
 	public ResponseEntity<Article> add(@ModelAttribute @Valid Article articles,
 			@RequestParam("sectionStr") String sectionsStr,
 			@RequestParam("headPhotos") MultipartFile[] headPhotos
