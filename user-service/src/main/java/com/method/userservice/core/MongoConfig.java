@@ -29,13 +29,13 @@ public class MongoConfig extends AbstractMongoConfiguration {
     }
 
     @Bean
-    public MongoDatabase mongoDatabase() throws Exception {
+    public MongoDatabase mongoDatabase() {
         return mongoClient().getDatabase("test");
     }
 
     @Override
     protected String getDatabaseName() {
-        return "method";
+        return "test";
     }
 
 }

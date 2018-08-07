@@ -2,7 +2,7 @@ package com.method.userservice.controllers;
 
 import javax.validation.Valid;
 
-import com.method.userservice.core.UserService;
+import com.method.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import com.method.userservice.bl.UserManager;
 import com.method.userservice.entity.User;
 import com.method.userservice.entity.VerificationCode;
-import com.method.userservice.util.Response;
 
 @RestController
 @RequestMapping("/user")

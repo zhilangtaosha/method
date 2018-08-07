@@ -3,9 +3,10 @@ package com.method.userservice.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,22 +15,50 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
-    @Id
-    String id;
-    String name;
-    String password;
-    String email;
+public class User extends BaseEntity {
+    private String name;
+    private String password;
+    private String email;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + super.getId() + '\'' +
+                "name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
+
+
+//    public static Map<String, Object> toMap(User user) {
+//        Map<String, Object> map = new HashMap<>();
+//        try {
+//            Class clazz = user.getClass();
+//            Method[] methods = clazz.getMethods();
+//            for (Method method : methods)
+//                if (method.invoke(user) != null)
+//                    map.put("", null);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//        return null;
+//    }
+
+
+    @Override
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
-        if (!(id == null))
-            map.put("_id", id);
-        if (!(name == null))
+        if (super.getId() != null)
+            map.put("_id", super.getId());
+        if (name != null)
             map.put("name", name);
-        if (!(password == null))
+        if (password != null)
             map.put("password", password);
-        if (!(email == null))
+        if (email != null)
             map.put("email", email);
         return map;
     }
@@ -38,6 +67,8 @@ public class User {
         new User().test();
 
         System.out.println(User.class.getSimpleName());
+
+//        System.out.println(User.toMap(new User("14", "12", "234")));
     }
 
     public class A<T> {

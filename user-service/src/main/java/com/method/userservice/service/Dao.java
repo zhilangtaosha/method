@@ -1,5 +1,6 @@
-package com.method.userservice.core;
+package com.method.userservice.service;
 
+import com.method.userservice.entity.BaseEntity;
 import com.method.userservice.util.Reflact;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -7,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.ParameterizedType;
 
-public class Dao<T> {
+public class Dao<T extends BaseEntity> {
 
     @Autowired
-    MongoDatabase mongoDatabase;
+    private MongoDatabase mongoDatabase;
+
+    private MongoCollection mongoTemplate;
 
     private Class<T> type;
 
@@ -18,8 +21,10 @@ public class Dao<T> {
         type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
-    public MongoCollection getDao() throws Exception {
-        return mongoDatabase.getCollection(Reflact.getCollectionName(type));
+    public MongoCollection getDao() {
+        if (mongoTemplate == null)
+            mongoTemplate = mongoDatabase.getCollection(Reflact.getCollectionName(type));
+        return mongoTemplate;
     }
 
 }
