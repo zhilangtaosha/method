@@ -36,15 +36,15 @@ public class MongoTransaction {
         MongoClientURI uri = new MongoClientURI(mongodbURI, options);
         mongoClient = new MongoClient(uri);
         MongoDatabase db = mongoClient.getDatabase("test");
-        db.drop();
-        db.createCollection("user", productJsonSchemaValidator());
+//        db.drop();
+//        db.createCollection("user", productJsonSchemaValidator());
         userMongoCollection = db.getCollection("user", User.class);
     }
 
-    private static CreateCollectionOperations productJsonSchemaValidator() {
-        return new CreateCollectionOperations().validationOptions(new ValidationOptions().validationAction(ValidationAction.ERROR)
-                .validationAction(ValidationAction.ERROR).validator(BsonDocument.parse("")));
-    }
+//    private static CreateCollectionOperations productJsonSchemaValidator() {
+//        return new CreateCollectionOperations().validationOptions(new ValidationOptions().validationAction(ValidationAction.ERROR)
+//                .validationAction(ValidationAction.ERROR).validator(BsonDocument.parse("")));
+//    }
 
     public static void transfer(ClientSession session, String from, Double amount) {
         try {

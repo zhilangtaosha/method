@@ -2,12 +2,12 @@ conversionStage = {
     $project : 1,
     from: 1,
     to: 1,
-    amount: 1
+    amount: 1,
     timeStamp: {
         $convert : {
             input: "$timeStamp",
             to: "date",
-            onError{
+            onError: {
                 $convert: ["could not convert", {$toString: "$timeStamp"}, "to type date"]
             },
             onNull: "Missing timeStamp"
