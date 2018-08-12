@@ -5,6 +5,7 @@ import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientURI;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
+import org.bson.codecs.configuration.CodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.springframework.context.annotation.Bean;
@@ -24,9 +25,22 @@ public class MongoConfig extends AbstractMongoConfiguration {
 
     @Bean
     public MongoClient mongoClient() {
-        return new MongoClient(new ServerAddress("localhost", 27017));
+
+        getLogger("org.mongodb.driver").setLevel(Level.SEVERE);
+        CodecRegistry codecRegistry = fromRegistries(MongoClient.getDefaultCodecRegistry(),
+                fromProviders(PojoCodecProvider.builder().automatic(true).build()));//.register("com.method.userservice.entity")
+
+//        CodecProvider pojoCodecProvider = PojoCodecProvider.builder().automatic(true).build();
+//        CodecRegistry pojoCodecRegistry = fromRegistries(MongoClient.getDefaultCodecRegistry(), fromProviders(pojoCodecProvider));
+
+        MongoClientOptions.Builder options = new MongoClientOptions.Builder().codecRegistry(codecRegistry);
+        MongoClientURI uri = new MongoClientURI("mongodb://localhost:27017", options);
+
+
+        return new MongoClient(uri);
     }
-    
+
+
     @Deprecated
     @Bean
     public MongoTemplate mongoTemplate() {

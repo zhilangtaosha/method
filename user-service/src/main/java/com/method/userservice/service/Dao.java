@@ -13,7 +13,7 @@ public class Dao<T extends BaseEntity> {
     @Autowired
     private MongoDatabase mongoDatabase;
 
-    private MongoCollection mongoTemplate;
+    private MongoCollection<T> mongoTemplate;
 
     private Class<T> type;
 
@@ -23,7 +23,7 @@ public class Dao<T extends BaseEntity> {
 
     public MongoCollection getDao() {
         if (mongoTemplate == null)
-            mongoTemplate = mongoDatabase.getCollection(Reflact.getCollectionName(type));
+            mongoTemplate = mongoDatabase.getCollection(Reflact.getCollectionName(type), type);
         return mongoTemplate;
     }
 

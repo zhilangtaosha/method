@@ -2,9 +2,11 @@ package com.method.userservice.service;
 
 import com.google.gson.Gson;
 import com.method.userservice.entity.BaseEntity;
+import com.method.userservice.entity.User;
 import com.mongodb.MongoClient;
 import com.mongodb.client.ClientSession;
 import org.bson.Document;
+import org.bson.codecs.Decoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -13,6 +15,7 @@ import org.springframework.data.mongodb.core.query.Update;
 
 import java.util.List;
 
+import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Updates.inc;
 
 public class GenericService<T extends BaseEntity> extends Dao<T> {
@@ -119,9 +122,9 @@ public class GenericService<T extends BaseEntity> extends Dao<T> {
     }
 
     public T findOne(String id) {
-        super.getDao().find(new Document("name", id));
 
-        return null;
+        T t = (T) super.getDao().find(Criteria.where("name").is(id).getCriteriaObject()).first();
+        return t;
     }
 
     public T findOne(Criteria criteria) {

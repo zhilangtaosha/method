@@ -66,4 +66,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("ok");
     }
 
+    @PostMapping("/find/{name}")
+    public ResponseEntity<?> transfer(@PathVariable String name) throws Exception {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findOne(name));
+    }
+
 }
