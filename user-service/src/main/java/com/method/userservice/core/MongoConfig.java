@@ -24,19 +24,9 @@ public class MongoConfig extends AbstractMongoConfiguration {
 
     @Bean
     public MongoClient mongoClient() {
-
-        getLogger("org.mongodb.driver").setLevel(Level.SEVERE);
-        CodecRegistry codecRegistry = fromRegistries(MongoClient.getDefaultCodecRegistry(),
-                fromProviders(PojoCodecProvider.builder().register("com.method.userservice.entity").build()));
-
-        MongoClientOptions.Builder options = new MongoClientOptions.Builder().codecRegistry(codecRegistry);
-        MongoClientURI uri = new MongoClientURI("mongodb://localhost:27017", options);
-
-
-        return new MongoClient(uri);
+        return new MongoClient(new ServerAddress("localhost", 27017));
     }
-
-
+    
     @Deprecated
     @Bean
     public MongoTemplate mongoTemplate() {

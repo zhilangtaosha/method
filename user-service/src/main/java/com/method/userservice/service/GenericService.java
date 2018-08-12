@@ -119,6 +119,8 @@ public class GenericService<T extends BaseEntity> extends Dao<T> {
     }
 
     public T findOne(String id) {
+        super.getDao().find(new Document("name", id));
+
         return null;
     }
 
