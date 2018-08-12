@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.method.userservice.controllers.interceptor.SecurityIntercepter;
 import com.method.userservice.controllers.interceptor.ValidationIntercepter;
 
-@EnableWebMvc
+//@EnableWebMvc
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 

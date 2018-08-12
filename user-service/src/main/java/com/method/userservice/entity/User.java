@@ -19,49 +19,10 @@ public class User extends BaseEntity {
     private String name;
     private String password;
     private String email;
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + super.getId() + '\'' +
-                "name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
+    private double balance;
 
 
-//    public static Map<String, Object> toMap(User user) {
-//        Map<String, Object> map = new HashMap<>();
-//        try {
-//            Class clazz = user.getClass();
-//            Method[] methods = clazz.getMethods();
-//            for (Method method : methods)
-//                if (method.invoke(user) != null)
-//                    map.put("", null);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//        return null;
-//    }
 
-
-    @Override
-    public Map<String, Object> toMap() {
-        Map<String, Object> map = new HashMap<>();
-        if (super.getId() != null)
-            map.put("_id", super.getId());
-        if (name != null)
-            map.put("name", name);
-        if (password != null)
-            map.put("password", password);
-        if (email != null)
-            map.put("email", email);
-        return map;
-    }
 
     public static void main(String[] args) throws ClassNotFoundException {
         new User().test();

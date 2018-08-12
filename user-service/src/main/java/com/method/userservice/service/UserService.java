@@ -25,8 +25,8 @@ public class UserService extends GenericService<User> {
     }
 
     @Override
-    public void delete(String id) {
-
+    public boolean delete(String id) {
+        return true;
     }
 
     @Override
@@ -88,5 +88,6 @@ public class UserService extends GenericService<User> {
     public User aggregate(Aggregation aggregation) {
         return null;
     }
+
 
 }
