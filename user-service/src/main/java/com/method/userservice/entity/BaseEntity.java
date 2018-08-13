@@ -17,9 +17,8 @@ public class BaseEntity {
 
     public Map<String, Object> toMap() {
         Map<String, Object> map = new HashMap<>();
-        if (!(id == null))
+        if (id != null)
             map.put("_id", id);
-
         return map;
     }
 

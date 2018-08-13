@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Map;

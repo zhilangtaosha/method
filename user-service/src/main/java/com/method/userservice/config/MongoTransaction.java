@@ -1,4 +1,4 @@
-package com.method.userservice.core;
+package com.method.userservice.config;
 
 import com.method.userservice.entity.User;
 import com.mongodb.MongoClient;
@@ -7,10 +7,6 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.client.ClientSession;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.model.ValidationAction;
-import com.mongodb.client.model.ValidationOptions;
-import com.mongodb.operation.CreateCollectionOperation;
-import org.bson.BsonDocument;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 

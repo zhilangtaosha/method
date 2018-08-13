@@ -2,6 +2,7 @@ package com.method.userservice.bl.impl;
 
 import com.method.userservice.service.GenericService;
 import com.method.userservice.service.SmsService;
+import com.method.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -23,6 +24,8 @@ public class UserManagerImpl extends GenericService<User> implements UserManager
 
     @Autowired
     SmsService smsService;
+    @Autowired
+    UserService userService;
 
     public User register(User provided) throws Exception {
         Query query = new Query();

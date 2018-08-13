@@ -1,4 +1,4 @@
-package com.method.userservice.core;
+package com.method.userservice.config;
 
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
