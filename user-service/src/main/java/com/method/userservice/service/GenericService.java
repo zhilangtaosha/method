@@ -101,11 +101,11 @@ public class GenericService<T extends BaseEntity> extends Dao<T> {
         }
     }
 
-    public boolean update(Update update) {
+    public boolean update(Criteria criteria, Update update) {
 
         ClientSession clientSession = mongoClient.startSession();
         try {
-            super.getDao().deleteOne(clientSession, update.getUpdateObject());
+            super.getDao().updateOne(clientSession, criteria.getCriteriaObject(), update.getUpdateObject());
             clientSession.commitTransaction();
             return true;
         } catch (Exception e) {
