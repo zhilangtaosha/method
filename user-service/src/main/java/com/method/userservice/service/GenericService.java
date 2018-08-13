@@ -1,7 +1,13 @@
 package com.method.userservice.service;
 
+import com.google.gson.Gson;
 import com.method.userservice.entity.BaseEntity;
+import com.method.userservice.entity.User;
+import com.mongodb.MongoClient;
+import com.mongodb.client.ClientSession;
 import org.bson.Document;
+import org.bson.codecs.Decoder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -9,32 +15,106 @@ import org.springframework.data.mongodb.core.query.Update;
 
 import java.util.List;
 
+import static com.mongodb.client.model.Filters.eq;
+import static com.mongodb.client.model.Updates.inc;
+
 public class GenericService<T extends BaseEntity> extends Dao<T> {
 
+    @Autowired
+    MongoClient mongoClient;
+
     public boolean insert(T t) {
-        super.getDao().insertOne(new Document(t.toMap()));
-        return true;
+        ClientSession clientSession = mongoClient.startSession();
+        try {
+            super.getDao().insertOne(clientSession, Document.parse(new Gson().toJson(t)));
+            clientSession.commitTransaction();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            clientSession.abortTransaction();
+            return false;
+        } finally {
+            clientSession.close();
+        }
     }
 
     public boolean save(T t) {
-        super.getDao().insertOne(new Document(t.toMap()));
-        return true;
+        ClientSession clientSession = mongoClient.startSession();
+        try {
+            clientSession.startTransaction();
+            super.getDao().insertOne(clientSession, Document.parse(new Gson().toJson(t)));
+            clientSession.commitTransaction();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            clientSession.abortTransaction();
+            return false;
+        } finally {
+            clientSession.close();
+        }
     }
 
-    public void delete(String id) {
-
+    public boolean delete(String id) {
+        ClientSession clientSession = mongoClient.startSession();
+        try {
+            super.getDao().deleteOne(clientSession, new Document("id", id));
+            clientSession.commitTransaction();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            clientSession.abortTransaction();
+            return false;
+        } finally {
+            clientSession.close();
+        }
     }
 
     public boolean delete(T t) {
-        return false;
+        ClientSession clientSession = mongoClient.startSession();
+        try {
+            super.getDao().deleteOne(clientSession, Document.parse(new Gson().toJson(t)));
+            clientSession.commitTransaction();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            clientSession.abortTransaction();
+            return false;
+        } finally {
+            clientSession.close();
+        }
     }
 
     public boolean delete(Criteria criteria) {
-        return false;
+
+
+        ClientSession clientSession = mongoClient.startSession();
+        try {
+            super.getDao().deleteOne(clientSession, criteria.getCriteriaObject());
+            clientSession.commitTransaction();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            clientSession.abortTransaction();
+            return false;
+        } finally {
+            clientSession.close();
+        }
     }
 
     public boolean update(Update update) {
-        return false;
+
+        ClientSession clientSession = mongoClient.startSession();
+        try {
+            super.getDao().deleteOne(clientSession, update.getUpdateObject());
+            clientSession.commitTransaction();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            clientSession.abortTransaction();
+            return false;
+        } finally {
+            clientSession.close();
+        }
     }
 
     public boolean update(T older, T newer) {
@@ -42,7 +122,9 @@ public class GenericService<T extends BaseEntity> extends Dao<T> {
     }
 
     public T findOne(String id) {
-        return null;
+
+        T t = (T) super.getDao().find(Criteria.where("name").is(id).getCriteriaObject()).first();
+        return t;
     }
 
     public T findOne(Criteria criteria) {
@@ -72,4 +154,25 @@ public class GenericService<T extends BaseEntity> extends Dao<T> {
     public T aggregate(Aggregation aggregation) {
         return null;
     }
+
+
+    public boolean transfer(String from, String to, Double money) {
+        ClientSession clientSession = mongoClient.startSession();
+        try {
+            clientSession.startTransaction();
+            super.getDao().updateOne(clientSession, Criteria.where("name").is(to).getCriteriaObject(), inc("balance", money));
+            int a = 1 / 0;
+            super.getDao().updateOne(clientSession, Criteria.where("name").is(from).getCriteriaObject(), inc("balance", -money));
+
+            clientSession.commitTransaction();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            clientSession.abortTransaction();
+            return false;
+        } finally {
+            clientSession.close();
+        }
+    }
+
 }

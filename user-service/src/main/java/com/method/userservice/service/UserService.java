@@ -1,6 +1,8 @@
 package com.method.userservice.service;
 
 import com.method.userservice.entity.User;
+import com.method.userservice.entity.VerificationCode;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -14,6 +16,7 @@ public class UserService extends GenericService<User> {
 
     @Override
     public boolean insert(User user) {
+        user.setCode(new VerificationCode("asdf", "asdf", 12L));
         super.save(user);
         return true;
     }
@@ -25,8 +28,8 @@ public class UserService extends GenericService<User> {
     }
 
     @Override
-    public void delete(String id) {
-
+    public boolean delete(String id) {
+        return true;
     }
 
     @Override
@@ -51,7 +54,8 @@ public class UserService extends GenericService<User> {
 
     @Override
     public User findOne(String id) {
-        return null;
+
+        return super.findOne(id);
     }
 
     @Override
@@ -88,5 +92,6 @@ public class UserService extends GenericService<User> {
     public User aggregate(Aggregation aggregation) {
         return null;
     }
+
 
 }

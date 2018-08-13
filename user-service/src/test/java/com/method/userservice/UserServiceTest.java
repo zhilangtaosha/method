@@ -12,9 +12,9 @@ public class UserServiceTest {
 
     @Test
     public void insertTest() throws Exception {
-        User user = new User("冯才文", "123456", "asdf@qq.com");
-        UserService userService1 = new UserService();
-
-        userService1.insert(user);
+//        User user = new User("冯才文", "123456", "asdf@qq.com");
+//        UserService userService1 = new UserService();
+//
+//        userService1.insert(user);
     }
 }
